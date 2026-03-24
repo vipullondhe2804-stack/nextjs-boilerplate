@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delfiex - UK Sports Prediction Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Inter',sans-serif;background:#080C12;color:#fff;overflow-x:hidden;}
+    :root{--accent:#67a8e7;--accent-dim:rgba(103,168,231,0.12);--accent-border:rgba(103,168,231,0.28);}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-bottom:1px solid rgba(255,255,255,0.06);}
+    .logo{font-size:20px;font-weight:700;letter-spacing:-0.5px;color:#fff;}
+    .logo span{color:var(--accent);}
+    .nav-badge{font-size:11px;font-weight:500;color:var(--accent);border:1px solid var(--accent-border);padding:4px 10px;border-radius:20px;letter-spacing:0.5px;text-transform:uppercase;}
+    .hero{padding:100px 40px 80px;text-align:center;}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent);font-size:12px;font-weight:500;padding:6px 14px;border-radius:20px;margin-bottom:32px;letter-spacing:0.5px;text-transform:uppercase;}
+    .dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s ease-in-out infinite;}
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+    .hero h1{font-size:clamp(36px,6vw,72px);font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:24px;color:#fff;}
+    .hero h1 em{font-style:normal;color:var(--accent);}
+    .hero-sub{font-size:18px;color:rgba(255,255,255,0.5);max-width:520px;margin:0 auto 48px;line-height:1.6;font-weight:300;}
+    .form-wrap{max-width:440px;margin:0 auto 32px;}
+    .form-row{display:flex;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden;transition:border-color 0.2s;}
+    .form-row:focus-within{border-color:var(--accent-border);}
+    .form-row input{flex:1;background:transparent;border:none;outline:none;padding:14px 16px;font-size:14px;color:#fff;font-family:'Inter',sans-serif;min-width:0;}
+    .form-row input::placeholder{color:rgba(255,255,255,0.3);}
+    .form-row button{background:var(--accent);color:#080C12;border:none;padding:14px 22px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;transition:opacity 0.2s;}
+    .form-row button:hover{opacity:0.85;}
+    .form-row button:disabled{opacity:0.6;cursor:not-allowed;}
+    .success-state{display:none;align-items:center;justify-content:center;gap:10px;color:var(--accent);font-size:14px;font-weight:500;padding:16px;}
+    .error-msg{color:#FF5A5A;font-size:13px;margin-top:10px;display:none;text-align:center;}
+    .hero-meta{display:flex;align-items:center;justify-content:center;gap:24px;font-size:12px;color:rgba(255,255,255,0.35);flex-wrap:wrap;}
+    .hero-meta span{display:flex;align-items:center;gap:6px;}
+    .check{width:14px;height:14px;border-radius:50%;background:var(--accent-dim);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .check::after{content:'';width:5px;height:3px;border-left:1.5px solid var(--accent);border-bottom:1.5px solid var(--accent);transform:rotate(-45deg) translateY(-1px);}
+    .ticker{background:#0D1117;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:14px 0;overflow:hidden;margin:60px 0;}
+    .ticker-inner{display:flex;gap:48px;animation:scroll 22s linear infinite;width:max-content;}
+    @keyframes scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+    .ticker-item{display:flex;align-items:center;gap:10px;white-space:nowrap;font-size:13px;color:rgba(255,255,255,0.4);font-weight:500;}
+    .ticker-val{color:var(--accent);}
+    .ticker-neg{color:#FF5A5A;}
+    .section{padding:80px 40px;max-width:1100px;margin:0 auto;}
+    .section-label{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+    .section-title{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:48px;color:#fff;}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+    .card{background:#0D1117;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:28px;transition:border-color 0.2s;}
+    .card:hover{border-color:var(--accent-border);}
+    .card-icon{width:40px;height:40px;border-radius:10px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+    .card-icon svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+    .card h3{font-size:16px;font-weight:600;margin-bottom:10px;color:#fff;letter-spacing:-0.3px;}
+    .card p{font-size:14px;color:rgba(255,255,255,0.45);line-height:1.6;}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1100px;margin:0 auto 80px;padding:0 40px;}
+    .stat{background:#0D1117;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:32px 24px;}
+    .stat-num{font-size:42px;font-weight:900;letter-spacing:-2px;color:#fff;margin-bottom:8px;}
+    .stat-num span{color:var(--accent);}
+    .stat-label{font-size:13px;color:rgba(255,255,255,0.4);font-weight:400;}
+    .mockup{background:#0D1117;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:20px;max-width:1020px;margin:0 auto 80px;}
+    .mock-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.06);}
+    .mock-tab{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.4);}
+    .mock-tab.active{background:var(--accent-dim);color:var(--accent);}
+    .mock-match{display:flex;align-items:center;justify-content:space-between;padding:14px;background:rgba(255,255,255,0.03);border-radius:10px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.05);}
+    .mock-teams{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:500;}
+    .mock-vs{font-size:11px;color:rgba(255,255,255,0.3);font-weight:400;}
+    .mock-odds{display:flex;gap:8px;flex-shrink:0;}
+    .mock-btn{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;}
+    .mock-yes{background:var(--accent-dim);color:var(--accent);}
+    .mock-no{background:rgba(255,90,90,0.12);color:#FF5A5A;}
+    .mock-live{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#FF5A5A;font-weight:500;}
+    .live-dot{width:5px;height:5px;background:#FF5A5A;border-radius:50%;animation:pulse 1s ease-in-out infinite;}
+    .footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    .footer-logo{font-size:16px;font-weight:700;}
+    .footer-logo span{color:var(--accent);}
+    .footer-note{font-size:12px;color:rgba(255,255,255,0.25);}
+    .divider-line{height:1px;background:rgba(255,255,255,0.06);margin:0 40px;}
+  </style>
+</head>
+<body>
+<div style="background:#080C12;min-height:100vh;">
+  <nav class="nav">
+    <div class="logo">Del<span>fiex</span></div>
+    <div class="nav-badge">Coming soon</div>
+  </nav>
+  <section class="hero">
+    <div class="hero-eyebrow"><div class="dot"></div>UK's first sports prediction market</div>
+    <h1>Predict.<br><em>Trade.</em> Win.</h1>
+    <p class="hero-sub">The UK's peer-to-peer sports prediction market. Call the game. Back your instinct. Get paid instantly.</p>
+    <div class="form-wrap">
+      <div class="form-row" id="formRow">
+        <input type="email" id="emailInput" placeholder="Enter your email for early access" />
+        <button id="btn1" onclick="handleJoin('emailInput','formRow','success1','err1','btn1')">Join waitlist</button>
+      </div>
+      <div class="success-state" id="success1"><div class="check"></div>You're on the list — we'll be in touch soon.</div>
+      <div class="error-msg" id="err1">Something went wrong. Please try again.</div>
+    </div>
+    <div class="hero-meta">
+      <span><div class="check"></div>Free to join</span>
+      <span><div class="check"></div>UK Gambling Commission licensed</span>
+      <span><div class="check"></div>Instant GBP payouts</span>
+    </div>
+  </section>
+  <div class="ticker">
+    <div class="ticker-inner">
+      <div class="ticker-item">Man City vs Arsenal <span class="ticker-val">YES 1.82</span></div>
+      <div class="ticker-item">Haaland scores first <span class="ticker-val">YES 2.40</span></div>
+      <div class="ticker-item">Chelsea top 4 finish <span class="ticker-neg">NO 1.55</span></div>
+      <div class="ticker-item">BRITs Album of the Year — Sabrina Carpenter <span class="ticker-val">YES 1.95</span></div>
+      <div class="ticker-item">England vs France — Both teams score <span class="ticker-val">YES 1.70</span></div>
+      <div class="ticker-item">BAFTA Best Film 2026 <span class="ticker-val">YES 3.10</span></div>
+      <div class="ticker-item">Liverpool title — 5 games left <span class="ticker-neg">NO 1.30</span></div>
+      <div class="ticker-item">Man City vs Arsenal <span class="ticker-val">YES 1.82</span></div>
+      <div class="ticker-item">Haaland scores first <span class="ticker-val">YES 2.40</span></div>
+      <div class="ticker-item">Chelsea top 4 finish <span class="ticker-neg">NO 1.55</span></div>
+      <div class="ticker-item">BRITs Album of the Year — Sabrina Carpenter <span class="ticker-val">YES 1.95</span></div>
+      <div class="ticker-item">England vs France — Both teams score <span class="ticker-val">YES 1.70</span></div>
+      <div class="ticker-item">BAFTA Best Film 2026 <span class="ticker-val">YES 3.10</span></div>
+      <div class="ticker-item">Liverpool title — 5 games left <span class="ticker-neg">NO 1.30</span></div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">£<span>0</span></div><div class="stat-label">House edge. Trade directly with other fans — no bookmaker cut.</div></div>
+    <div class="stat"><div class="stat-num"><span>YES</span> / NO</div><div class="stat-label">Simple prediction format. Every market is a binary call.</div></div>
+    <div class="stat"><div class="stat-num"><span>2s</span></div><div class="stat-label">Average payout time via Open Banking. Instant, always.</div></div>
+  </div>
+  <section class="section">
+    <div class="section-label">The platform</div>
+    <div class="section-title">Built different.</div>
+    <div class="cards">
+      <div class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><h3>Trade, not bet</h3><p>Crowd-driven odds powered by an AMM. Feels like your favourite trading app, not a bookmaker.</p></div>
+      <div class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><h3>Instant payouts</h3><p>Win and get paid in seconds via Open Banking (TrueLayer). No delays, no withdrawal forms.</p></div>
+      <div class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div><h3>All UK sports</h3><p>Premier League, women's football, rugby, cricket, athletics. Every sport. Every athlete.</p></div>
+      <div class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><h3>Entertainment markets</h3><p>BAFTAs. BRITs. Reality TV. Your prediction instincts go way beyond sport.</p></div>
+      <div class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h3>Fully regulated</h3><p>UK Gambling Commission licensed. Built for compliance, built for trust.</p></div>
+      <div class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>Community first</h3><p>Prediction leagues, university partnerships, and a community built around knowing the game.</p></div>
+    </div>
+  </section>
+  <div class="divider-line"></div>
+  <section class="section">
+    <div class="section-label">App preview</div>
+    <div class="section-title">What it looks like.</div>
+  </section>
+  <div class="mockup">
+    <div class="mock-header">
+      <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.6);">Live markets</div>
+      <div style="display:flex;gap:4px;"><div class="mock-tab active">Football</div><div class="mock-tab">Rugby</div><div class="mock-tab">Entertainment</div></div>
+    </div>
+    <div class="mock-match">
+      <div><div class="mock-live"><div class="live-dot"></div>Live · 67'</div><div class="mock-teams" style="margin-top:6px;">Arsenal <span class="mock-vs">vs</span> Man City</div><div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:4px;">Will Arsenal keep a clean sheet?</div></div>
+      <div class="mock-odds"><button class="mock-btn mock-yes">YES 2.10</button><button class="mock-btn mock-no">NO 1.72</button></div>
+    </div>
+    <div class="mock-match">
+      <div><div class="mock-live"><div class="live-dot"></div>Live · 34'</div><div class="mock-teams" style="margin-top:6px;">Liverpool <span class="mock-vs">vs</span> Chelsea</div><div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:4px;">Salah to score in this match?</div></div>
+      <div class="mock-odds"><button class="mock-btn mock-yes">YES 1.65</button><button class="mock-btn mock-no">NO 2.20</button></div>
+    </div>
+    <div class="mock-match">
+      <div><div style="font-size:11px;color:rgba(255,255,255,0.3);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;">Upcoming · BRITs 2026</div><div class="mock-teams" style="margin-top:6px;">Entertainment</div><div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:4px;">Sabrina Carpenter wins Album of the Year?</div></div>
+      <div class="mock-odds"><button class="mock-btn mock-yes">YES 1.95</button><button class="mock-btn mock-no">NO 1.85</button></div>
+    </div>
+  </div>
+  <section class="hero" style="padding:80px 40px;">
+    <div class="hero-eyebrow"><div class="dot"></div>Limited early access</div>
+    <h1 style="font-size:clamp(28px,4vw,52px);">Get in early.<br><em>Shape the product.</em></h1>
+    <p class="hero-sub">First 1,000 members get founding status — early features, exclusive markets, and founding badges.</p>
+    <div class="form-wrap">
+      <div class="form-row" id="formRow2">
+        <input type="email" id="emailInput2" placeholder="Your email address" />
+        <button id="btn2" onclick="handleJoin('emailInput2','formRow2','success2','err2','btn2')">Claim spot</button>
+      </div>
+      <div class="success-state" id="success2"><div class="check"></div>Spot claimed — see you at launch.</div>
+      <div class="error-msg" id="err2">Something went wrong. Please try again.</div>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="footer-logo">Del<span>fiex</span></div>
+    <div class="footer-note">© 2026 Delfiex · UK Gambling Commission licensed · 18+ only · Please gamble responsibly</div>
+  </footer>
+</div>
+<script>
+async function handleJoin(inputId, rowId, successId, errId, btnId) {
+  const email = document.getElementById(inputId).value;
+  if (!email || !email.includes('@')) return;
+  const btn = document.getElementById(btnId);
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Joining...';
+  document.getElementById(errId).style.display = 'none';
+  try {
+    const res = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    if (res.ok) {
+      document.getElementById(rowId).style.display = 'none';
+      document.getElementById(successId).style.display = 'flex';
+    } else {
+      throw new Error();
+    }
+  } catch {
+    document.getElementById(errId).style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+}
+</script>
+</body>
+</html>
